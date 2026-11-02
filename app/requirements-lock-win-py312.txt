@@ -1,0 +1,13 @@
+# Verified on Windows 11 x64 / CPython 3.12.9; other platforms use requirements.txt.
+certifi==2026.10.23
+cffi==2.1.1
+charset-normalizer==3.5.2
+cryptography==50.0.2
+et_xmlfile==2.0.0
+idna==3.20
+openpyxl==3.1.5
+pycparser==3.12
+pymupdf==1.28.2
+pypdf==6.21.2
+requests==2.34.2
+urllib3==2.8.0

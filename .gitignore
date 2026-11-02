@@ -1,0 +1,11 @@
+app/data/
+app/导出结果/
+.venv/
+__pycache__/
+*.pyc
+*.db
+*.sqlite*
+*.log
+启动日志.txt
+.env
+.env.*

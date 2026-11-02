@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>专利管理 V3.1 · 空白 Skill 版</title>
+  <link rel="stylesheet" href="/styles.css?v=20260911-v3.6-split-scroll" />
+</head>
+<body>
+<div class="contest-notice">空白 Skill 版 · 无预置案件、附件或账号配置 · 全部功能保留</div>
+  <section id="login-screen" class="login-screen hidden"><div class="login-card"><span class="brand-mark">专</span><p class="eyebrow">INTERNAL PATENT SEARCH</p><h1>专利查询</h1><p>请输入管理员提供的共享密码。</p><form id="reader-login"><label>共享密码<input id="reader-password" type="password" autocomplete="current-password" required /></label><button class="primary full" type="submit">进入查询系统</button></form><p id="login-message" class="login-message"></p></div></section>
+
+  <header id="app-header" class="topbar hidden">
+    <div class="brand" aria-label="PATENT FLOW 专利查询系统 V3.1">
+      <div class="brand-wordmark"><strong>PATENT FLOW</strong><em>空白 Skill 版</em></div>
+      <small class="brand-version">专利查询系统<br />V3.1</small>
+    </div>
+    <nav>
+      <button class="nav-btn" data-view="contest">使用指引</button>
+      <button class="nav-btn active" data-view="search">查询</button>
+      <button class="nav-btn admin-only" data-view="import">更新总表</button>
+      <button class="nav-btn admin-only" data-view="archive">材料归集</button>
+      <button class="nav-btn admin-only" data-view="health">数据健康</button>
+      <button class="nav-btn admin-only" data-view="logs">操作日志</button>
+      <button class="nav-btn admin-only" data-view="settings">AI 设置</button>
+      <button class="nav-btn admin-only" data-view="sharing">共享设置</button>
+      <button class="nav-btn admin-only" data-view="feishu">飞书同步</button>
+    </nav>
+    <div id="access-pill" class="local-pill"><span></span><b id="access-label">正在确认权限</b><button id="reader-logout" class="pill-action hidden" type="button">退出</button></div>
+  </header>
+
+  <main id="app-main" class="hidden">
+    <section id="view-contest" class="view">
+      <div class="page-title"><h1>专利总表维护助手</h1><p>空白启动，按需导入自己的数据。</p></div>
+      <div class="contest-panel"><h2>开始使用</h2><ol><li>进入“更新总表”，选择完整数据ZIP，点击“一次导入”。</li><li>或按原流程导入Excel总表、归集材料。</li><li>查询、筛选、同族检索式、差异确认、导出、健康检查与操作日志均可正常使用。</li></ol><p>本包无案件、附件、历史案例、演示证据或账号配置。实时智慧芽、AI、OCR和飞书按需要自行设置。</p></div>
+    </section>
+
+    <section id="view-search" class="view active">
+      <div class="hero">
+        <div><p class="eyebrow">SMART PATENT SEARCH</p><h1>一句话，找到专利和材料</h1><p>输入申请主体、当前权利人、时间、状态、发明人或名称，快速定位证书与通知书。</p></div>
+        <div class="ask-box">
+          <input id="smart-query" placeholder="例如：查询未公开专利，或集团已授权专利" autocomplete="off" />
+          <button id="smart-search">查询</button>
+        </div>
+        <div id="ai-chip" class="ai-chip">正在读取 AI 设置…</div>
+        <div id="smart-answer" class="smart-answer hidden"></div>
+      </div>
+
+      <div class="stats" id="stats">
+        <div class="stat"><small>全部专利</small><strong id="stat-total">—</strong></div>
+        <div class="stat"><small>集团专利</small><strong id="stat-group">—</strong></div>
+        <div class="stat"><small>已授权</small><strong id="stat-authorized">—</strong></div>
+        <div class="stat"><small>申请中</small><strong id="stat-pending">—</strong></div>
+        <div class="stat"><small>已归档材料</small><strong id="stat-materials">—</strong></div>
+      </div>
+
+      <div class="workspace">
+        <aside class="filters">
+          <div class="section-heading"><h2>筛选条件</h2><button id="clear-filters" class="link-btn">清空</button></div>
+          <label>关键词<input id="f-keyword" placeholder="申请号、名称或法律事件" /></label>
+          <label>申请主体（原始申请人）<input id="f-applicant" placeholder="仅用于“XX申请的专利”" /></label>
+          <label>当前权利人<input id="f-rightsholder" placeholder="输入当前公司名称" /></label>
+          <label>发明人<input id="f-inventor" placeholder="输入中文姓名，自动包含同族海外申请" /></label>
+          <fieldset class="status-filter"><legend>专利状态（可多选）</legend><div id="f-statuses" class="status-options"><label><input type="checkbox" value="已授权" />已授权</label><label><input type="checkbox" value="申请中" />申请中</label><label><input type="checkbox" value="已驳回" />已驳回</label><label><input type="checkbox" value="已撤回" />已撤回</label><label><input type="checkbox" value="已失效" />已失效</label><label><input type="checkbox" value="状态待确认" />待确认</label></div></fieldset>
+          <label>专利名称<input id="f-title" placeholder="输入名称关键词" /></label>
+          <label>国家/地区<input id="f-country" placeholder="例如：中国、美国或海外" /></label>
+          <div class="date-group"><span>申请时间</span><input id="f-application-from" type="date" /><b>至</b><input id="f-application-to" type="date" /></div>
+          <div class="date-group"><span>授权时间</span><input id="f-grant-from" type="date" /><b>至</b><input id="f-grant-to" type="date" /></div>
+          <button id="filter-search" class="primary full">应用筛选</button>
+        </aside>
+
+        <section class="results-card">
+          <div class="section-heading"><div><h2>查询结果</h2><p id="result-count">正在读取…</p></div><div class="result-actions"><button id="export-results" class="ghost">导出 Excel</button><button id="export-materials" class="ghost">导出材料</button><button id="refresh-search" class="ghost">刷新</button></div></div>
+          <p id="export-status" class="export-status hidden"></p>
+          <div class="table-wrap">
+            <table><thead><tr><th>业务分类</th><th>申请号</th><th>公开号</th><th>专利名称</th><th>当前状态</th><th>当前权利人</th><th>发明人</th><th>申请日</th><th>材料</th></tr></thead><tbody id="result-body"></tbody></table>
+          </div>
+          <div id="empty-results" class="empty hidden"><div>⌕</div><h3>没有找到记录</h3><p>尝试减少筛选条件或导入最新版专利总表。</p></div>
+        </section>
+      </div>
+    </section>
+
+    <section id="view-archive" class="view archive-view">
+      <div class="page-title"><p class="eyebrow">V3.1 MATERIAL COLLECTION</p><h1>专利材料归集</h1><p>可使用智能归档处理 PDF，也可通过人工匹配导入 PDF、Word、图片和 ZIP 材料。</p></div>
+      <div class="archive-counts" id="archive-counts">
+        <button data-status="待处理"><small>待处理</small><strong>0</strong></button><button data-status="识别中"><small>识别中</small><strong>0</strong></button><button data-status="待确认"><small>待确认</small><strong>0</strong></button><button data-status="已归档"><small>已归档</small><strong>0</strong></button><button data-status="失败"><small>失败</small><strong>0</strong></button>
+      </div>
+      <div class="archive-layout">
+        <div>
+          <div class="upload-card"><div class="section-heading"><div><h2>PDF 智能归档</h2><p>按设置读取 PDF 文字或调用 OCR；本参赛包未配置外部 OCR 与 AI 密钥</p></div></div><div class="drop-zone" id="archive-drop" tabindex="0" role="button" aria-label="拖入待自动归档材料"><div class="drop-icon">归</div><h3>拖入 PDF 或 ZIP</h3><p>PDF 进入自动识别；Word 和图片请使用下方“人工匹配导入”</p><input id="archive-files" type="file" accept=".zip,.pdf" multiple /><button class="ghost" id="choose-archive-files" type="button">选择文件或压缩包</button><span id="archive-file-name"></span></div><button id="submit-archive-files" class="primary" disabled>加入归档队列</button></div>
+          <div class="panel archive-jobs-panel"><div class="section-heading"><div><h2>归档任务</h2><p id="archive-job-caption">读取中…</p></div><div class="result-actions archive-batch-actions"><select id="archive-status-filter"><option value="">全部状态</option><option>待处理</option><option>识别中</option><option>待确认</option><option>已归档</option><option>失败</option><option>已忽略</option></select><select id="archive-batch-category"><option value="">保留识别类型</option></select><button id="batch-confirm-archive" class="primary" disabled>确认所选</button><button id="batch-ignore-archive" class="ghost" disabled>忽略所选</button><button id="retry-pending-archive" class="ghost">新流程批量重试</button><button id="refresh-archive-jobs" class="ghost">刷新</button></div></div><div class="table-wrap"><table><thead><tr><th><input id="archive-select-all" type="checkbox" aria-label="选择本页待确认任务" /></th><th>文件</th><th>匹配专利</th><th>材料类型</th><th>日期</th><th>状态</th><th>说明</th><th>操作</th></tr></thead><tbody id="archive-job-body"></tbody></table></div></div>
+          <div class="panel manual-material-panel"><div class="section-heading"><div><h2>人工匹配导入</h2><p>适用于 PDF、Word、图片和 ZIP；先扫描预览，确认后再上传</p></div></div><div class="drop-zone" id="material-drop" tabindex="0" role="button" aria-label="拖入或选择专利材料"><div class="drop-icon">夹</div><h3>拖入材料文件或 ZIP 压缩包</h3><p>文件名中需包含可匹配的申请号或公开号；Excel 总表请在“更新总表”导入</p><input id="material-files" type="file" accept=".zip,.pdf,.doc,.docx,.jpg,.jpeg,.png,.tif,.tiff" multiple /><button class="ghost" id="choose-materials" type="button">选择文件或压缩包</button><span id="material-name"></span></div><button id="preview-materials" class="primary" disabled>扫描并匹配</button><div id="material-preview" class="material-preview hidden"><div class="section-heading"><div><h2>材料匹配预览</h2><p id="material-summary"></p></div><button id="execute-materials" class="primary">确认并上传</button></div><div class="table-wrap"><table><thead><tr><th>文件名</th><th>申请号</th><th>材料字段</th><th>专利名称</th><th>处理</th><th>说明</th></tr></thead><tbody id="material-body"></tbody></table></div></div></div>
+        </div>
+        <aside class="archive-side">
+          <div class="panel archive-settings-panel"><div class="section-heading"><div><h2>监控与 PDF 识别</h2><p>密钥加密保存在本机，不发送到同事浏览器</p></div></div><label class="check-row"><input id="archive-watch-enabled" type="checkbox" /><span><strong>监控待归档文件夹</strong><small>文件复制完成并稳定后自动加入队列</small></span></label><label class="setting-field">待归档文件夹<input id="archive-watch-folder" /><small id="archive-processed-folder"></small></label><label class="check-row"><input id="mineru-enabled" type="checkbox" /><span><strong>优先使用 MinerU 强制 OCR</strong><small>每个 PDF 都解析，不再只处理扫描页</small></span></label><label class="setting-field">MinerU Token<input id="mineru-token" type="password" autocomplete="new-password" placeholder="留空表示保持不变" /><small id="mineru-token-status">未配置</small></label><label class="setting-field">MinerU 模型<select id="mineru-model"><option value="vlm">VLM（推荐）</option><option value="pipeline">Pipeline</option></select></label><div class="setting-actions"><button id="test-mineru" class="ghost">测试 MinerU</button></div><hr/><label class="check-row"><input id="tencent-enabled" type="checkbox" /><span><strong>启用腾讯云 OCR 备用</strong><small>MinerU 失败时才尝试；当前建议关闭</small></span></label><label class="setting-field">腾讯云 SecretId<input id="tencent-secret-id" type="password" autocomplete="new-password" placeholder="留空表示保持不变" /><small id="tencent-secret-status">未配置</small></label><label class="setting-field">腾讯云 SecretKey<input id="tencent-secret-key" type="password" autocomplete="new-password" placeholder="留空表示保持不变" /></label><label class="setting-field">地域<input id="tencent-region" value="ap-guangzhou" /></label><div class="setting-actions"><button id="test-tencent" class="ghost">测试腾讯云备用</button><button id="save-archive-settings" class="primary">保存设置</button></div></div>
+          <div class="panel audit-panel"><div class="section-heading"><div><h2>现有材料审计</h2><p>只生成预览，不会改动材料</p></div></div><div id="audit-summary" class="audit-summary muted-cell">尚未生成审计预览</div><div class="setting-actions"><button id="run-material-audit" class="ghost">生成全量预览</button><button id="apply-material-audit" class="primary" disabled>确认迁移</button></div></div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="view-health" class="view narrow">
+      <div class="page-title"><p class="eyebrow">DATA QUALITY</p><h1>数据健康检查</h1><p>只读检查专利总表、材料文件与归档队列，不会自动修改或删除任何内容。</p></div>
+      <div id="health-cards" class="health-cards"></div>
+      <div class="panel"><div class="section-heading"><div><h2>需要处理</h2><p id="health-generated">尚未检查</p></div><button id="refresh-health" class="primary">重新检查</button></div><div id="health-sections"></div></div>
+    </section>
+
+    <section id="view-import" class="view narrow">
+      <div class="contest-panel"><h2>整包导入</h2><p>选择一个数据ZIP，一次导入台账、关联材料和来源原件。仅用于空白库首次装载；同包重复导入不会重复添加。已有台账请使用下方Excel增量更新。</p><input id="bundle-file" type="file" accept=".zip" aria-label="完整数据ZIP包"><button id="bundle-import" class="primary">一次导入</button><p id="bundle-result" aria-live="polite"></p></div>
+      <div class="page-title"><p class="eyebrow">INCREMENTAL UPDATE</p><h1>更新专利总表</h1><p>按申请号新增或更新；不会删除记录，也不会用空值覆盖已有信息。</p></div>
+      <div class="panel family-query-panel" id="source-update-panel">
+        <div class="section-heading"><div><h2>自动获取总表</h2><p>沿用原总表列名和内容形式；名称、状态差异及新增成员先核对，保留原值。</p></div><button id="source-refresh" class="ghost" type="button">刷新状态</button></div>
+        <label class="setting-field">数据来源<select id="source-provider"><option value="patsnap_api">智慧芽 API</option><option value="patsnap_mcp">智慧芽 MCP</option><option value="generic_mcp">其他 MCP</option></select></label>
+        <details id="source-connection"><summary>连接设置</summary><div class="settings-grid">
+          <label class="setting-field">智慧芽 API 密钥<input id="source-api-key" type="password" autocomplete="new-password" placeholder="已保存时留空" /></label>
+          <label class="setting-field">智慧芽 MCP 地址<input id="source-patsnap-url" type="url" /></label>
+          <label class="setting-field">智慧芽 MCP 密钥<input id="source-mcp-key" type="password" autocomplete="new-password" placeholder="已保存时留空" /></label>
+          <label class="setting-field">其他 MCP 密钥<input id="source-generic-key" type="password" autocomplete="new-password" placeholder="按需填写" /></label>
+        </div><p id="source-credentials" class="family-query-tip"></p><label class="setting-field">其他 MCP 配置<textarea id="source-generic-config" rows="10" spellcheck="false" placeholder="填写接口、检索工具、分页及字段映射；详见本地《智慧芽接入》说明"></textarea></label>
+        <button id="source-save" class="ghost" type="button">保存连接</button></details>
+        <div class="result-actions" style="margin-top:16px"><button id="source-start" class="primary" type="button">自动获取</button><button id="source-resume" class="ghost hidden" type="button">继续获取</button></div>
+        <p id="source-status" role="status" aria-live="polite">尚未获取</p>
+        <div id="source-preview" class="hidden"><div class="section-heading"><div><h3>更新差异</h3><p id="source-summary"></p></div><button id="source-apply" class="primary" type="button">确认更新可执行项</button></div>
+          <label style="display:block;margin:12px 0">查看 <select id="source-filter"><option value="changes">可执行更新</option><option value="review">待核对项</option><option value="all">全部记录</option></select></label>
+          <p class="family-query-tip">确认仅写入下列可执行变化。待核对字段及新增候选本次不写入，可通过原 Excel 总表核实修订。</p>
+          <details id="source-missing-wrap" class="hidden"><summary id="source-missing-summary"></summary><p id="source-missing" class="family-query-tip"></p></details>
+          <div class="table-wrap" style="max-height:420px;overflow:auto"><table><thead><tr><th>申请号</th><th>处理</th><th>原值 → 新值</th><th>待核对（原值保留）</th></tr></thead><tbody id="source-preview-body"></tbody></table></div>
+        </div>
+      </div>
+      <div class="panel family-query-panel">
+        <div class="section-heading"><div><h2>智慧芽简单同族检索式</h2><p id="family-query-summary">正在根据当前总表生成…</p></div><div class="result-actions"><button id="refresh-family-query" class="ghost" type="button">刷新</button><button id="copy-family-query" class="primary" type="button" disabled>复制检索式</button></div></div>
+        <textarea id="family-query" readonly placeholder="当前总表暂无有效的简单同族编号"></textarea>
+        <p class="family-query-tip">从当前台账的有效数字简单同族编号生成FAM_ID检索式；空值、横线和内部标签不作为智慧芽编号。</p>
+      </div>
+      <div class="panel family-query-panel">
+        <div class="section-heading"><div><h2>没有同族编号的申请号汇总</h2><p id="missing-family-summary">正在读取…</p></div><button id="copy-missing-family" class="primary" type="button" disabled>复制申请号</button></div>
+        <textarea id="missing-family-applications" readonly placeholder="当前总表中的专利均已有有效简单同族编号"></textarea>
+        <p class="family-query-tip">每行一个申请号。将这部分与上述同族检索结果一起导出；以后某件专利补到有效 FAM_ID 后，会自动从本名单移出并进入上方同族检索式。</p>
+      </div>
+      <div class="upload-card">
+        <div class="drop-zone" id="excel-drop"><div class="drop-icon">表</div><h3>选择新版 Excel 总表</h3><p>支持 .xlsx，优先读取“集团专利总表”工作表</p><input id="excel-file" type="file" accept=".xlsx" /><button class="ghost" onclick="document.getElementById('excel-file').click()">选择文件</button><span id="excel-name"></span></div>
+        <button id="preview-import" class="primary" disabled>生成更新预览</button>
+      </div>
+      <div id="import-preview" class="panel hidden"><div class="section-heading"><div><h2>更新预览</h2><p id="import-summary"></p></div><button id="execute-import" class="primary">确认并更新</button></div><div id="import-quality" class="import-quality-grid"></div><div class="table-wrap"><table><thead><tr><th>Excel 行</th><th>申请号</th><th>处理</th><th>变更字段</th><th>说明</th></tr></thead><tbody id="import-body"></tbody></table></div></div>
+    </section>
+
+    <section id="view-logs" class="view narrow">
+      <div class="page-title"><p class="eyebrow">AUDIT TRAIL</p><h1>操作日志</h1><p>记录总表更新、材料上传、跳过与失败情况。</p></div>
+      <div class="panel"><div class="section-heading"><h2>最近操作</h2><button id="refresh-logs" class="ghost">刷新</button></div><div class="table-wrap"><table><thead><tr><th>时间</th><th>操作</th><th>申请号</th><th>目标</th><th>结果</th><th>说明</th></tr></thead><tbody id="log-body"></tbody></table></div></div>
+    </section>
+
+    <section id="view-settings" class="view narrow">
+      <div class="page-title"><p class="eyebrow">DEEPSEEK</p><h1>AI 识别设置</h1><p>查询时只发送问句；V3.1 材料归档会把必要的 OCR 文字和有限候选字段发送给 DeepSeek 进行结构化整理。</p></div>
+      <div class="panel settings-panel">
+        <div class="setting-row"><div><h3>启用 DeepSeek 识别</h3><p>关闭后自动改用本地的简单规则。</p></div><label class="switch"><input id="ai-enabled" type="checkbox" checked /><span></span></label></div>
+        <label class="setting-field">DeepSeek API Key<input id="ai-key" type="password" autocomplete="new-password" placeholder="请输入 sk- 开头的 API Key" /><small id="ai-key-status">未配置</small></label>
+        <label class="setting-field">模型<input id="ai-model" value="deepseek-v4-flash" /><small>默认使用速度快、费用低的 Flash 模型。</small></label>
+        <label class="setting-field">自定义简单映射<textarea id="ai-mappings" rows="5" placeholder="每行一条，例如：&#10;下证=授权&#10;我们公司=示例"></textarea><small>先替换口语，再交给 DeepSeek 识别；格式为“原词=标准词”。</small></label>
+        <div class="privacy-note"><strong>密钥与数据安全</strong><p>API Key 使用当前 Windows 账户加密后保存在本机，不会传给内网同事。查询只发送问句；自动归档仅发送必要的材料文字及有限候选信息，原始材料和实际筛选仍在本机完成。</p></div>
+        <div class="setting-actions"><button id="clear-ai-key" class="ghost">清除密钥</button><button id="test-ai-connection" class="ghost">测试连接</button><button id="save-ai-settings" class="primary">保存设置</button></div>
+      </div>
+      <div class="panel mapping-panel"><div class="section-heading"><div><h2>内置业务映射</h2><p>AI 识别后还会按这些口径校正。</p></div></div><div class="mapping-grid"><div><strong>示例科技</strong><span>示例智造科技有限公司</span></div><div><strong>集团 / 我们 / 我司</strong><span>同时匹配集团内 5 家申请主体</span></div><div><strong>下证 / 拿证</strong><span>已授权，时间按授权日</span></div><div><strong>没用了</strong><span>已失效、已撤回、已驳回</span></div><div><strong>还没公开但已提交</strong><span>申请中且公开日为空</span></div><div><strong>快到期</strong><span>必须有到期日或年费期限字段</span></div></div></div>
+    </section>
+
+    <section id="view-sharing" class="view narrow">
+      <div class="page-title"><p class="eyebrow">READ-ONLY LAN ACCESS</p><h1>内网只读共享设置</h1><p>同事使用同一套数据查询；你更新总表或补充材料后，对方刷新即可看到。</p></div>
+      <div class="panel settings-panel">
+        <div class="setting-row"><div><h3>启用内网只读共享</h3><p>仅在使用“启动内网共享版”并完成专用网络防火墙配置后可访问。</p></div><label class="switch"><input id="share-enabled" type="checkbox" /><span></span></label></div>
+        <label class="setting-field">共享密码<input id="share-password" type="password" autocomplete="new-password" placeholder="至少 8 个字符；留空表示保持不变" /><small id="share-password-status">尚未设置</small></label>
+        <div class="share-limits"><label class="setting-field">每位同事每小时 AI 次数<input id="share-ai-hour" type="number" min="1" max="1000" value="30" /></label><label class="setting-field">系统每天 AI 总次数<input id="share-ai-day" type="number" min="1" max="10000" value="300" /></label></div>
+        <div class="privacy-note"><strong>同事可使用的功能</strong><p>查询、筛选、查看详情、复制编号、下载材料和下载筛选结果 Excel。总表更新、材料上传、日志及所有设置始终只允许本机访问。</p></div>
+        <div class="setting-actions"><button id="save-share-settings" class="primary">保存共享设置</button></div>
+      </div>
+      <div class="panel"><div class="section-heading"><div><h2>同事访问地址</h2><p id="share-mode-status">正在读取…</p></div></div><div id="share-addresses" class="address-list"></div><p class="share-tip">首次使用请先运行“开启公司内网访问.cmd”，以后使用“启动内网共享版.vbs”。你的电脑关机、休眠或未启动程序时，同事无法访问。</p></div>
+    </section>
+    <section id="view-feishu" class="view narrow">
+      <div class="page-title"><p class="eyebrow">FEISHU</p><h1>飞书同步</h1><p>集团专利明细单向同步到飞书，含对外共有；人工方向人工汇总由您维护。</p></div>
+      <div class="panel">
+        <div class="section-heading"><h2>同步状态</h2><button id="feishu-refresh" class="ghost">刷新</button></div>
+        <div class="feishu-summary"><div><small>最近成功</small><strong id="feishu-last-success">尚未同步</strong></div><div><small>最近结果</small><strong id="feishu-last-result">尚未执行</strong></div><div><small>当前范围</small><strong id="feishu-scope">正在读取</strong></div><div><small>测试验收</small><strong id="feishu-validation">尚未完成</strong></div></div>
+        <p id="feishu-source-note" class="feishu-note"></p><p id="feishu-schedule" class="feishu-note"></p>
+        <div class="setting-actions"><button id="feishu-preview" class="ghost">预览差异</button><button id="feishu-run" class="primary">立即同步</button></div>
+        <div id="feishu-diff" class="feishu-diff hidden"></div>
+      </div>
+      <div class="panel settings-panel">
+        <div class="section-heading"><h2>连接设置</h2></div>
+        <div class="setting-row"><div><h3>启用同步</h3><p>保存后可手动执行；每日任务需验收后安装。</p></div><label class="switch"><input id="feishu-enabled" type="checkbox" /><span></span></label></div>
+        <div class="feishu-form-grid">
+          <label class="setting-field">目标表<select id="feishu-mode"><option value="test">测试表</option><option value="production">正式表</option></select></label>
+          <label class="setting-field">App ID<input id="feishu-app-id" autocomplete="off" placeholder="cli_…" /></label>
+          <label class="setting-field">app_token<input id="feishu-app-token" autocomplete="off" placeholder="多维表格 Base 标识" /></label>
+          <label class="setting-field">table_id<input id="feishu-table-id" autocomplete="off" placeholder="tbl…，只填写明细表" /></label>
+        </div>
+        <label class="setting-field">App Secret<input id="feishu-app-secret" type="password" autocomplete="new-password" placeholder="留空保持不变；只保存在本机 Windows 凭据管理器" /><small id="feishu-secret-status">未配置</small></label>
+        <div class="privacy-note"><strong>共享与人工数据</strong><p>同事在飞书设为只读；同步应用需要明细表编辑权限。人工方向人工汇总放在独立数据表中，此处不填写该表的 table_id。退出集团范围时只移除共享明细，SQLite 原记录保留。</p></div>
+        <div class="setting-actions"><button id="feishu-test" class="ghost">测试连接</button><button id="feishu-save" class="primary">保存设置</button></div>
+        <details class="feishu-setup"><summary>首次配置与测试</summary><ol><li>在飞书开放平台创建企业自建应用，开通多维表格读写权限并发布。</li><li>新建独立测试多维表格，将应用添加为可编辑协作者；填写该测试表标识并保存。</li><li>点击“初始化测试字段”，再点击“运行测试验收”。程序用虚构专利验证新增、修改、重复同步、退出和异常恢复，完成后清理测试记录。</li><li>验收通过后，将已验证的空表结构复制为正式明细表；人工汇总另建一表。</li><li>切换正式表并保存，预览差异后同步。每日 11:00 任务在首次正式同步成功后安装。</li></ol><div class="setting-actions"><button id="feishu-prepare" class="ghost">初始化测试字段</button><button id="feishu-acceptance" class="ghost">运行测试验收</button></div></details>
+      </div>
+      <div class="panel"><div class="section-heading"><h2>最近运行</h2></div><div class="table-wrap"><table><thead><tr><th>开始时间</th><th>触发</th><th>结果</th><th>数量</th><th>说明</th></tr></thead><tbody id="feishu-runs"></tbody></table></div></div>
+      <div class="panel"><div class="section-heading"><h2>同步日志</h2></div><div class="table-wrap"><table><thead><tr><th>时间</th><th>申请号</th><th>操作</th><th>结果</th><th>说明</th></tr></thead><tbody id="feishu-events"></tbody></table></div></div>
+    </section>
+  </main>
+
+  <dialog id="material-export-dialog" class="export-dialog"><form method="dialog"><div class="dialog-heading"><div><p class="eyebrow">MATERIAL EXPORT</p><h2>选择材料导出方式</h2></div><button class="close-dialog" value="cancel" aria-label="关闭">×</button></div><div class="export-choices"><label><input type="radio" name="material-export-mode" value="all" checked /><span><strong>全部已关联材料</strong><small>导出当前筛选结果关联的全部材料，包含演示附件及其他材料</small></span></label><label><input type="radio" name="material-export-mode" value="preferred" /><span><strong>证书优先（推荐）</strong><small>每件专利有证书就导出证书，没有证书则导出受理通知书</small></span></label><label><input type="radio" name="material-export-mode" value="certificate" /><span><strong>仅专利证书</strong><small>只导出已归档的专利证书</small></span></label><label><input type="radio" name="material-export-mode" value="acceptance" /><span><strong>仅受理通知书</strong><small>只导出已归档的受理通知书</small></span></label></div><div class="dialog-actions"><button class="ghost" value="cancel">取消</button><button id="confirm-material-export" class="primary" value="default">生成并下载 ZIP</button></div></form></dialog>
+  <dialog id="archive-confirm-dialog" class="export-dialog archive-confirm-dialog"><form method="dialog"><div class="dialog-heading"><div><p class="eyebrow">ARCHIVE REVIEW</p><h2>确认材料归档</h2></div><button class="close-dialog" value="cancel" aria-label="关闭">×</button></div><div class="archive-review-context"><div><strong>文件名</strong><div id="archive-confirm-file" class="confirm-file"></div></div><div><strong>识别证据</strong><div id="archive-confirm-evidence" class="confirm-file">—</div></div></div><label class="setting-field">材料类型<select id="archive-confirm-category"></select></label><label class="setting-field">发文日期<input id="archive-confirm-date" type="date" /></label><div class="candidate-box"><div class="section-heading"><strong>归档到以下专利</strong><button id="select-all-archive-patents" class="ghost" type="button">全选候选</button></div><div id="archive-candidates"></div><div class="candidate-search"><input id="archive-patent-search" placeholder="输入申请号、名称、申请人或发明人" /><button id="search-archive-patent" class="ghost" type="button">查找专利</button></div><div id="archive-search-results"></div></div><div class="privacy-note"><strong>AI 摘要与事项</strong><p id="archive-confirm-summary">—</p><div id="archive-confirm-actions"></div></div><div class="dialog-actions"><button class="ghost" value="cancel">取消</button><button id="confirm-archive-job" class="primary" value="default">确认归档</button></div></form></dialog>
+  <div id="detail-overlay" class="overlay hidden"><aside class="detail-drawer"><button id="close-detail" class="close">×</button><div id="detail-content"></div></aside></div>
+  <div id="toast" class="toast hidden"></div>
+  <script src="/app.js?v=20261019-feishu-sync"></script>
+  <script src="/feishu_sync.js?v=20261019"></script>
+  <script src="/master-update.js?v=20261021-format-v2"></script>
+<script src="/bundle-import.js"></script>
+</body>
+</html>
