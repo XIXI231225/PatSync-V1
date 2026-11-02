@@ -4,7 +4,7 @@
 
 ## 启动
 
-Windows：安装 Python 3.12（64 位，含 pip 和 venv），双击 `安装依赖.cmd`，再双击 `启动演示.cmd`。浏览器访问 http://127.0.0.1:18879。支持环境、使用方法和功能边界详见 [SKILL.md](SKILL.md)。
+Windows：安装 Python 3.12（64 位，含 pip 和 venv），双击 `安装依赖.cmd`，再双击 `启动演示.cmd`。浏览器访问 `http://127.0.0.1:18879`。支持环境、使用方法和功能边界详见 [SKILL.md](SKILL.md)。
 
 ## 数据与外部服务
 
@@ -13,3 +13,4 @@ Windows：安装 Python 3.12（64 位，含 pip 和 venv），双击 `安装依�
 ## 许可
 
 项目代码采用 MIT License；第三方依赖和数据服务分别适用其自身许可和服务条款。
+
